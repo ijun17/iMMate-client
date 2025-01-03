@@ -1,6 +1,7 @@
 import { MainLayout } from "@/components/MainLayout";
+import { PieChart, Pie, Cell } from "recharts";
 
-export const MyPage = () => {
+export const UserPage = () => {
   return (
     <MainLayout>
       <UserProfile />
@@ -40,40 +41,56 @@ const UserProfile = () => (
   </section>
 );
 
+const data = [
+  { name: "Group A", value: 400, stock: "엔비디아" },
+  { name: "Group B", value: 300, stock: "삼성" },
+  { name: "Group C", value: 300, stock: "인텔" },
+  { name: "Group D", value: 200, stock: "카카오" },
+  { name: "Group E", value: 100, stock: "기타" },
+];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#CCC"];
+
 const Portfolio = () => (
   <section className="bg-white p-4 rounded-lg shadow-sm mb-4">
-    <h3 className="text-lg font-semibold">포트폴리오</h3>
-    <div className="flex items-center justify-center">
-      <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center relative">
-        {/* Pie Chart Example */}
-        <svg
-          className="w-28 h-28"
-          viewBox="0 0 36 36"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle
-            cx="18"
-            cy="18"
-            r="15.9155"
-            fill="transparent"
-            stroke="#facc15"
-            strokeWidth="3.2"
-            strokeDasharray="30 70"
-            transform="rotate(-90 18 18)"
-          />
-          <circle
-            cx="18"
-            cy="18"
-            r="15.9155"
-            fill="transparent"
-            stroke="#10b981"
-            strokeWidth="3.2"
-            strokeDasharray="20 80"
-            strokeDashoffset="-30"
-            transform="rotate(-90 18 18)"
-          />
-        </svg>
-        <span className="absolute text-sm font-semibold">투자비율</span>
+    <h3 className="text-lg font-semibold mb-4">포트폴리오</h3>
+    <div className="flex">
+      <div className="flex-1">
+        <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center">
+          <PieChart width={128} height={128}>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={48}
+              outerRadius={64}
+              fill="#8884d8"
+              paddingAngle={5}
+              dataKey="value"
+            >
+              {data.map((_, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                  className="outline-none"
+                />
+              ))}
+            </Pie>
+          </PieChart>
+          <span className="absolute text-sm font-semibold">투자비율</span>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col gap-1 text-gray-800">
+        {data.map((e, i) => (
+          <div className="flex items-center text-sm">
+            <div
+              style={{ background: COLORS[i % COLORS.length] }}
+              className="w-4 h-4 mr-2"
+            ></div>
+            {e.stock}
+          </div>
+        ))}
       </div>
     </div>
     <div className="text-right text-red-500 font-bold text-lg">33.10%</div>
