@@ -83,7 +83,7 @@ const Portfolio = () => (
 
       <div className="flex-1 flex flex-col gap-1 text-gray-800">
         {data.map((e, i) => (
-          <div className="flex items-center text-sm">
+          <div className="flex items-center text-sm" key={i}>
             <div
               style={{ background: COLORS[i % COLORS.length] }}
               className="w-4 h-4 mr-2"
