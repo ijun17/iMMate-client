@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 const CrewCreationModal = ({
   isOpen,
   onClose,
@@ -11,11 +9,14 @@ const CrewCreationModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg">
+      <div className="bg-white w-11/12 max-w-md p-6 rounded-lg shadow-lg">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">크루 생성</h2>
-          <button onClick={onClose} className="text-gray-600 hover:text-black">
+          <button
+            className="text-2xl text-gray-600 hover:text-black"
+            onClick={onClose}
+          >
             &times;
           </button>
         </div>
@@ -34,7 +35,7 @@ const CrewCreationModal = ({
             <label className="block text-sm font-medium mb-2">크루 설명</label>
             <textarea
               placeholder="이 크루는 해외 주식에 투자하는 크루입니다."
-              className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full h-32 resize-none p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows={3}
             ></textarea>
           </div>
