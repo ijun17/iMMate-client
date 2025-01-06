@@ -5,8 +5,8 @@ export const Footer = () => {
     <footer className="flex-1 w-full bg-white border-t border-gray-200 flex justify-center">
       <div className="flex justify-between max-w-screen-lg w-full">
         <FooterIcon icon="🏠" label="홈" path="/" />
-        <FooterIcon icon="📘" label="Book" path="" />
-        <FooterIcon icon="🔔" label="Alerts" path="" />
+        {/* <FooterIcon icon="📘" label="Book" path="" />
+        <FooterIcon icon="🔔" label="Alerts" path="" /> */}
         <FooterIcon icon="👤" label="마이페이지" path="/user" />
       </div>
     </footer>
