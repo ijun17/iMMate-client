@@ -13,6 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as UserImport } from './routes/user'
 import { Route as IndexImport } from './routes/index'
+import { Route as CrewCrewIdIndexImport } from './routes/crew/$crewId/index'
+import { Route as CrewCrewIdAgendaAgendaIdImport } from './routes/crew/$crewId/agenda/$agendaId'
 
 // Create/Update Routes
 
@@ -25,6 +27,18 @@ const UserRoute = UserImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CrewCrewIdIndexRoute = CrewCrewIdIndexImport.update({
+  id: '/crew/$crewId/',
+  path: '/crew/$crewId/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CrewCrewIdAgendaAgendaIdRoute = CrewCrewIdAgendaAgendaIdImport.update({
+  id: '/crew/$crewId/agenda/$agendaId',
+  path: '/crew/$crewId/agenda/$agendaId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +60,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserImport
       parentRoute: typeof rootRoute
     }
+    '/crew/$crewId/': {
+      id: '/crew/$crewId/'
+      path: '/crew/$crewId'
+      fullPath: '/crew/$crewId'
+      preLoaderRoute: typeof CrewCrewIdIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/crew/$crewId/agenda/$agendaId': {
+      id: '/crew/$crewId/agenda/$agendaId'
+      path: '/crew/$crewId/agenda/$agendaId'
+      fullPath: '/crew/$crewId/agenda/$agendaId'
+      preLoaderRoute: typeof CrewCrewIdAgendaAgendaIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +82,51 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/user': typeof UserRoute
+  '/crew/$crewId': typeof CrewCrewIdIndexRoute
+  '/crew/$crewId/agenda/$agendaId': typeof CrewCrewIdAgendaAgendaIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/user': typeof UserRoute
+  '/crew/$crewId': typeof CrewCrewIdIndexRoute
+  '/crew/$crewId/agenda/$agendaId': typeof CrewCrewIdAgendaAgendaIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/user': typeof UserRoute
+  '/crew/$crewId/': typeof CrewCrewIdIndexRoute
+  '/crew/$crewId/agenda/$agendaId': typeof CrewCrewIdAgendaAgendaIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/user'
+  fullPaths: '/' | '/user' | '/crew/$crewId' | '/crew/$crewId/agenda/$agendaId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/user'
-  id: '__root__' | '/' | '/user'
+  to: '/' | '/user' | '/crew/$crewId' | '/crew/$crewId/agenda/$agendaId'
+  id:
+    | '__root__'
+    | '/'
+    | '/user'
+    | '/crew/$crewId/'
+    | '/crew/$crewId/agenda/$agendaId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UserRoute: typeof UserRoute
+  CrewCrewIdIndexRoute: typeof CrewCrewIdIndexRoute
+  CrewCrewIdAgendaAgendaIdRoute: typeof CrewCrewIdAgendaAgendaIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UserRoute: UserRoute,
+  CrewCrewIdIndexRoute: CrewCrewIdIndexRoute,
+  CrewCrewIdAgendaAgendaIdRoute: CrewCrewIdAgendaAgendaIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +140,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/user"
+        "/user",
+        "/crew/$crewId/",
+        "/crew/$crewId/agenda/$agendaId"
       ]
     },
     "/": {
@@ -105,6 +150,12 @@ export const routeTree = rootRoute
     },
     "/user": {
       "filePath": "user.tsx"
+    },
+    "/crew/$crewId/": {
+      "filePath": "crew/$crewId/index.tsx"
+    },
+    "/crew/$crewId/agenda/$agendaId": {
+      "filePath": "crew/$crewId/agenda/$agendaId.tsx"
     }
   }
 }
