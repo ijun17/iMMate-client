@@ -6,11 +6,18 @@ import AgendaCreationModal from "../AgendaCreationModal";
 type Props = {
   children: ReactElement | ReactElement[];
   crewName: string;
+  onChat: (message: string) => void;
   mainClassName?: React.ComponentProps<"div">["className"];
 };
 
-export const CrewLayout = ({ children, crewName, mainClassName }: Props) => {
+export const CrewLayout = ({
+  children,
+  crewName,
+  onChat,
+  mainClassName,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
 
   return (
     <div className="bg-gray-50 min-h-screen h-screen flex flex-col">
@@ -48,10 +55,21 @@ export const CrewLayout = ({ children, crewName, mainClassName }: Props) => {
         <div className="max-w-screen-lg w-full flex items-center space-x-4">
           <input
             type="text"
-            placeholder="안녕하세요"
+            placeholder="메시지"
             className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none"
+            value={chatInput}
+            onChange={(e) => setChatInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onChat(chatInput);
+                setChatInput("");
+              }
+            }}
           />
-          <button className="px-4 py-2 bg-black text-white rounded-lg">
+          <button
+            className="px-4 py-2 bg-black text-white rounded-lg"
+            onClick={() => onChat(chatInput)}
+          >
             ➤
           </button>
         </div>

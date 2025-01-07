@@ -1,5 +1,6 @@
 import { CrewLayout } from "@/components/CrewLayout";
 import { Link, useParams } from "@tanstack/react-router";
+import { useState } from "react";
 
 type Comment = {
   name: string;
@@ -26,18 +27,29 @@ const commentList: Comment[] = [
 ];
 
 export const CrewPage = () => {
-  const params = useParams({ from: "/crew/$crewId/" });
+  const { crewId } = useParams({ from: "/crew/$crewId/" });
+  const [chatList, setChatList] = useState<Comment[]>(commentList);
   return (
-    <CrewLayout crewName={params.crewId}>
+    <CrewLayout
+      crewName={crewId}
+      onChat={(chat) =>
+        setChatList([...chatList, { name: "me", text: chat, profile: "😊" }])
+      }
+    >
       {/* 메인 컨텐츠 */}
       <div className="space-y-6">
         {/* 중요한 안건 카드 */}
         <Agenda />
 
         {/* 댓글 섹션 */}
-        <div className="overflow-y-scroll">
-          {commentList.map((e, i) => (
-            <Comment key={i} name={e.name} avatar={e.profile} text={e.text} />
+        <div className="space-y-4 pb-4">
+          {chatList.map((chat, index) => (
+            <Comment
+              key={index}
+              name={chat.name}
+              avatar={chat.profile}
+              text={chat.text}
+            />
           ))}
         </div>
       </div>
@@ -54,28 +66,29 @@ const Comment = ({
   avatar: string;
   text: string;
 }) => (
-  <div className="flex space-x-4 items-start mb-6">
-    {/* Avatar */}
-    <div className="flex items-center justify-center p-1 bg-gray-300 rounded-full">
-      <span className="text-lg">{avatar}</span>
+  <div className="flex items-start space-x-2">
+    <div className="w-8 h-8 rounded-full bg-gray-200 flex justify-center items-center">
+      {avatar}
     </div>
-    {/* Content */}
-    <div className="bg-gray-200 p-4 rounded-lg shadow max-w-96">
-      <h3 className="font-semibold flex items-center space-x-2">
-        <span>{name}</span>
-        <span className="text-sm text-gray-500">•</span>
-      </h3>
-      <p className="mt-2 text-gray-600">{text}</p>
+    <div
+      className={
+        "flex-1 bg-gray-200 rounded-lg px-4 py-2 " +
+        (name === "me" ? "bg-blue-100" : "")
+      }
+    >
+      <p className="text-sm text-gray-400 mb-1">{name}</p>
+      <p>{text}</p>
     </div>
   </div>
 );
 
 const Agenda = () => {
+  const { crewId } = useParams({ from: "/crew/$crewId/" });
   return (
     <div className="bg-gray-800 text-white p-4 rounded-lg shadow">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg">중요한 안건</h2>
-        <p className="text-md text-gray-400">2024.12.22</p>
+        <p className="text-md text-gray-400">2025.01.07</p>
       </div>
       <div className="p-4 bg-gray-700 rounded-lg">
         <div className="flex justify-between items-start mb-2">
@@ -92,9 +105,9 @@ const Agenda = () => {
       <button className="mt-4 text-sm text-gray-400 underline">
         <Link
           to="/crew/$crewId/agenda/$agendaId"
-          params={{ crewId: "test", agendaId: "test" }}
+          params={{ crewId, agendaId: "test" }}
         >
-          자세히보기
+          자세히 보기
         </Link>
       </button>
     </div>
