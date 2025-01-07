@@ -4,38 +4,31 @@ import { http, HttpResponse } from "msw";
 export const handlers = [
   // GET /api/broker-accounts
   http.get("*/api/broker-accounts", () => {
+    const brokers = [
+      "KB증권",
+      "NH투자증권",
+      "SK 증권",
+      "한국투자증권",
+      "iM 증권",
+    ];
+    const stocks = ["엔비디아", "SK하이닉스", "AMD", "애플", "인텔"];
     return HttpResponse.json(
       Array(5)
         .fill(null)
         .map((_, i) => ({
-          brokerName: "증권사 " + (i + 1),
-          investmentAmount: (i + 1) * 1000,
-          evaluationAmount: (i + 1) * 1200,
+          brokerName: brokers[i],
+          investmentAmount: (i + 1) * 1000000,
+          evaluationAmount: (i + 1) * 1200000,
           stocks: Array(i + 1)
             .fill(null)
             .map((_, j) => ({
-              stockName: "주식 " + (j + 1),
-              investmentAmount: 1000,
-              evaluationAmount: 1200,
+              stockName: stocks[j],
+              investmentAmount: 1000000,
+              evaluationAmount: 1200000,
               quantity: j + 1,
             })),
         }))
     );
-    return HttpResponse.json([
-      {
-        brokerName: "Broker A",
-        investmentAmount: 1000,
-        evaluationAmount: 1200,
-        stocks: [
-          {
-            stockName: "Stock A",
-            investmentAmount: 500,
-            evaluationAmount: 600,
-            quantity: 10,
-          },
-        ],
-      },
-    ]);
   }),
 
   // POST /api/auth/signup
@@ -54,8 +47,8 @@ export const handlers = [
   http.get("*/api/auth/me", () => {
     return HttpResponse.json({
       email: "user@example.com",
-      name: "John Doe",
-      investmentStyle: "Aggressive",
+      name: "me",
+      investmentStyle: "빅테크 선호",
     });
   }),
 
@@ -63,9 +56,24 @@ export const handlers = [
   http.get("*/api/crews/top-ranking", () => {
     return HttpResponse.json([
       {
-        crewName: "Crew A",
-        investmentStyle: "Conservative",
-        crewYield: 10,
+        crewName: "iMMate 크루",
+        investmentStyle: "1등",
+        crewYield: 2328490000,
+      },
+      {
+        crewName: "DGB 크루",
+        investmentStyle: "2등",
+        crewYield: 1328490000,
+      },
+      {
+        crewName: "iM 크루",
+        investmentStyle: "3등",
+        crewYield: 328490000,
+      },
+      {
+        crewName: "부자 크루",
+        investmentStyle: "4등",
+        crewYield: 228490000,
       },
     ]);
   }),
@@ -75,8 +83,13 @@ export const handlers = [
     return HttpResponse.json([
       {
         crewName: "Crew B",
-        investmentStyle: "Balanced",
-        crewYield: 15,
+        investmentStyle: "균형잡힌 투자",
+        crewYield: 1500000,
+      },
+      {
+        crewName: "Crew B",
+        investmentStyle: "수익률 상승",
+        crewYield: 20000000,
       },
     ]);
   }),
@@ -92,9 +105,14 @@ export const handlers = [
   http.get("*/api/crews/my-crews", () => {
     return HttpResponse.json([
       {
-        crewName: "Crew C",
-        investmentStyle: "Aggressive",
-        crewYield: 20,
+        crewName: "iMMate 크루",
+        investmentStyle: "빅테크 선호",
+        crewYield: 2328490000,
+      },
+      {
+        crewName: "생성한 크루",
+        investmentStyle: "",
+        crewYield: 0,
       },
     ]);
   }),
