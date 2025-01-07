@@ -1,3 +1,13 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface FormData {
+  name: string;
+  description: string;
+  investmentAmount: number;
+  investmentItems: string[];
+}
+
 const CrewCreationModal = ({
   isOpen,
   onClose,
@@ -5,6 +15,29 @@ const CrewCreationModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
+  const { register, handleSubmit, watch } = useForm<FormData>();
+  const [customItems, setCustomItems] = useState<string[]>([]); // 추가된 아이템 관리
+
+  const onSubmit = (data: FormData) => {
+    console.log("Submitted data:", { ...data, investmentItems: customItems });
+    onClose(); // 제출 후 모달 닫기
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && event.currentTarget.value.trim() !== "") {
+      const newItem = event.currentTarget.value.trim();
+      if (!customItems.includes(newItem)) {
+        setCustomItems((prev) => [...prev, newItem]);
+      }
+      event.currentTarget.value = ""; // 입력 필드 초기화
+      event.preventDefault(); // 기본 동작 방지
+    }
+  };
+
+  const handleRemoveItem = (item: string) => {
+    setCustomItems((prev) => prev.filter((i) => i !== item));
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -22,61 +55,63 @@ const CrewCreationModal = ({
         </div>
 
         {/* Form */}
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">크루 이름</label>
             <input
               type="text"
               placeholder="크루 이름"
               className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              {...register("name", {
+                required: "크루 이름은 필수 항목입니다.",
+              })}
             />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">크루 설명</label>
             <textarea
-              placeholder="이 크루는 해외 주식에 투자하는 크루입니다."
+              placeholder="크루 설명"
               className="w-full h-32 resize-none p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               rows={3}
+              {...register("description")}
             ></textarea>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">
-              크루 카테고리
-            </label>
-            <select className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>선택</option>
-              <option>IT</option>
-              <option>금융</option>
-              <option>기타</option>
-            </select>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">
               최소 투자 비용
             </label>
-            <div>
-              <input type="range" min="0" max="1000" className="w-full" />
-              <div className="flex justify-between text-sm text-gray-500">
-                <span>0원</span>
-                <span>1000만원</span>
-              </div>
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              defaultValue="50"
+              className="w-full"
+              {...register("investmentAmount", { valueAsNumber: true })}
+            />
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>0원</span>
+              <span className="text-blue-400">
+                {watch("investmentAmount", 50)}만원
+              </span>
             </div>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-2">투자 종목</label>
             <input
               type="text"
-              placeholder="AMD"
+              placeholder="엔터로 항목 추가"
               className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-2"
+              onKeyDown={handleKeyDown}
             />
-            <div className="flex gap-2">
-              {["인텔", "엔비디아", "테슬라", "애플"].map((item) => (
+            <div className="flex gap-2 flex-wrap">
+              {customItems.map((item) => (
                 <button
                   key={item}
                   type="button"
                   className="px-3 py-1 border rounded-full text-sm text-gray-600 hover:bg-gray-100"
+                  onClick={() => handleRemoveItem(item)}
                 >
-                  {item}
+                  {item} &times;
                 </button>
               ))}
             </div>
