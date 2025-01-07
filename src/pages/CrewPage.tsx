@@ -1,5 +1,5 @@
 import { CrewLayout } from "@/components/CrewLayout";
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 
 type Comment = {
   name: string;
@@ -26,8 +26,9 @@ const commentList: Comment[] = [
 ];
 
 export const CrewPage = () => {
+  const params = useParams({ from: "/crew/$crewId/" });
   return (
-    <CrewLayout>
+    <CrewLayout crewName={params.crewId}>
       {/* 메인 컨텐츠 */}
       <div className="space-y-6">
         {/* 중요한 안건 카드 */}

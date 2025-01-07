@@ -3,9 +3,8 @@ import { Link, useParams } from "@tanstack/react-router";
 
 const CrewAgendaPage = () => {
   const { crewId } = useParams({ from: "/crew/$crewId/agenda/$agendaId" });
-  // const [selectedOption, setSelectedOption] = useState<string>("buy");
   return (
-    <CrewLayout mainClassName="bg-gray-800">
+    <CrewLayout mainClassName="bg-gray-800" crewName={crewId}>
       <div className="flex-1 overflow-y-auto p-4 space-y-4 text-white">
         {/* Important Notice */}
         <div className="flex items-start space-x-2">

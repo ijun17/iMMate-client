@@ -5,10 +5,11 @@ import AgendaCreationModal from "../AgendaCreationModal";
 
 type Props = {
   children: ReactElement | ReactElement[];
+  crewName: string;
   mainClassName?: React.ComponentProps<"div">["className"];
 };
 
-export const CrewLayout = ({ children, mainClassName }: Props) => {
+export const CrewLayout = ({ children, crewName, mainClassName }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -19,7 +20,7 @@ export const CrewLayout = ({ children, mainClassName }: Props) => {
             <button className="font-bold text-xl">
               <Link to="/">{"<"}</Link>
             </button>
-            <h1 className="text-lg font-bold truncate">일론 머스크 크루</h1>
+            <h1 className="text-lg font-bold truncate">{crewName}</h1>
           </div>
           <button
             className="px-4 py-2 text-white bg-black rounded shrink-0"
