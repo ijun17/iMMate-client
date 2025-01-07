@@ -171,17 +171,19 @@ const MyStocks = ({ data }: { data?: BrokerAccount[] }) => (
     <h3 className="text-lg font-semibold mb-2">내 증권</h3>
     <div className="space-y-4">
       {data &&
-        data.map((broker) => (
-          <StockCard
-            key={broker.brokerName}
-            name={broker.brokerName}
-            amount={broker.evaluationAmount}
-            change={
-              (100 * (broker.evaluationAmount - broker.investmentAmount)) /
-              broker.investmentAmount
-            }
-          />
-        ))}
+        data
+          .sort((a, b) => b.evaluationAmount - a.evaluationAmount)
+          .map((broker) => (
+            <StockCard
+              key={broker.brokerName}
+              name={broker.brokerName}
+              amount={broker.evaluationAmount}
+              change={
+                (100 * (broker.evaluationAmount - broker.investmentAmount)) /
+                broker.investmentAmount
+              }
+            />
+          ))}
     </div>
   </section>
 );
@@ -196,7 +198,9 @@ const StockCard = ({ name, amount, change }: StockCardProps) => (
   <div className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm">
     <div>
       <p className="text-base font-semibold">{name}</p>
-      <p className="text-sm text-gray-500">{amount}원</p>
+      <p className="text-sm text-gray-500">
+        {amount.toLocaleString("ko-KR")}원
+      </p>
     </div>
     <div
       className={
