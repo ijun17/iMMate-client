@@ -32,6 +32,10 @@ const UserProfile = () => {
     queryFn: fetchAuthMe,
     staleTime: Infinity,
   });
+
+  const logout = () => {
+    // TODO
+  };
   return (
     <section className="bg-white p-4 rounded-lg shadow-sm mb-4 space-y-4">
       <div className="flex items-center space-x-4">
@@ -58,7 +62,10 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
-      <button className="bg-gray-800 text-white py-2 px-4 rounded-md w-full">
+      <button
+        className="bg-gray-800 text-white py-2 px-4 rounded-md w-full"
+        onClick={logout}
+      >
         로그아웃
       </button>
     </section>
@@ -88,6 +95,19 @@ const Portfolio = React.memo(({ data }: { data?: BrokerAccount[] }) => {
     name: stock.stockName,
     value: stock.evaluationAmount,
   }));
+
+  const totalInvestmentAmount = stockList.reduce(
+    (acc, cur) => acc + cur.investmentAmount,
+    0
+  );
+  const totalEvaluationAmount = stockList.reduce(
+    (acc, cur) => acc + cur.evaluationAmount,
+    0
+  );
+  const totalChange =
+    (100 * (totalEvaluationAmount - totalInvestmentAmount)) /
+    totalInvestmentAmount;
+
   return (
     <section className="bg-white p-4 rounded-lg shadow-sm mb-4">
       <h3 className="text-lg font-semibold mb-4">포트폴리오</h3>
@@ -130,7 +150,18 @@ const Portfolio = React.memo(({ data }: { data?: BrokerAccount[] }) => {
           ))}
         </div>
       </div>
-      <div className="text-right text-red-500 font-bold text-lg">33.10%</div>
+      <div
+        className={
+          "text-right text-lg font-bold " +
+          (totalChange > 0
+            ? "text-red-500"
+            : totalChange < 0
+              ? "text-blue-500"
+              : "text-gray-500")
+        }
+      >
+        {totalChange}%
+      </div>
     </section>
   );
 });
